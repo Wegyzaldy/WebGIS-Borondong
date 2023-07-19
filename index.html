@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebGIS Sebaran Kerajinan Borondong Desa Laksana</title>
+    <link rel="icon" href="assest/IbunLogo.png">
+
+    <!-- Required meta tags -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+    <link rel="stylesheet" href="fonts/icomoon/style.css">
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
+
+    <!--Leaflet Library-->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.1/dist/leaflet.css"
+    integrity="sha256-sA+zWATbFveLLNqWO2gtiw3HL/lh1giY/Inf1BJ0z14="
+    crossorigin=""/>
+            
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin=""></script>
+    
+    <!--Bootstrap for leaflet-->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+    <!--Style-->
+    <link rel="stylesheet" href="css/style.css">
+
+ 
+ <style>
+    html, body{
+        height: 100%;
+    }
+    
+    #map {
+        height: 100%;
+        }
+    
+    #locate-position{
+    position:absolute;
+    top:140px;
+    left:25px;
+    -webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+    }
+ </style>
+
+</head>
+
+<body>
+    <!--Nav Bar-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" datatarget="#navbarSupportedContent" 
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+        <a class="nav-link" href="#">Home <span class="sr-only">
+        </span></a>
+        </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+        <button class="btn btn-outline-success my-2 my-sm-0" onClick="javascript:getLocationLeaflet();">Lokasi Saya</button>
+        </form>
+        </div>
+    </nav>
+
+    <!--Bagian Map-->
+    <div id="map"></div>
+    <script src="js/BatasWilayah.js"></script>
+    <script src="js/jalan.js"></script>
+
+    <script>
+        var map = L.map('map',{
+        center: [-7.10304665, 107.7713242],
+        zoom: 17.5
+        });
+        
+        //Basemap
+        var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution:
+        '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>&copy; <a href="http://cartodb.com/attributions">CartoDB</a>',subdomains: 'abcd',
+        maxZoom: 50
+        });
+
+        var google = L.tileLayer('https://mt0.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', 
+        {
+        attribution: 'Pesona Ibun &copy;2023 &mdash; Tim KKN-PPM UGM 2023',
+        maxZoom: 20
+        })
+        .addTo(map);
+
+        var carto = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}{r}.png', {attribution:
+        '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>&copy; <a href="http://cartodb.com/attributions">CartoDB</a>',subdomains: 'abcd',
+        maxZoom: 50
+        });
+
+        var baseMaps = {
+        "Open Street Map": osm,
+        "Google Satellite Map": google,
+        "Carto Map": carto,
+        }; 
+
+        //Simbologi Tempat
+        var borondong = L.icon({iconUrl: 'assest/food.png', iconSize:[28, 45]});
+        
+        //Lokasi Borondong
+        var Borondong_Cicih = L.marker([-7.10376674, 107.7714242], {icon: borondong})
+            .bindPopup('<center><img src="assest/Cicih.jpg" width="300px" height="200px" title="Borondong Cicih" alt="Borondong Cicih"></center><h2>Borondong Cicih</h2>')
+            .addTo(map)
+            
+        var Borondong_Madurasa = L.marker([-7.10362873, 107.7714941], {icon: borondong})
+            .bindPopup('<center><img src="assest/Cicih.jpg" width="300px" height="200px" title="Borondong Madurasa" alt="Borondong Madurasa"></center><h2>Borondong Madurasa</h2>')
+            .addTo(map)
+
+        var Borondong_Family = L.marker([-7.10278209, 107.7721963], {icon: borondong})
+            .bindPopup('<center><img src="assest/Family.jpg" width="300px" height="200px" title="Borondong Family" alt="Borondong Family"></center><h2>Borondong Family</h2>')
+            .addTo(map)
+        
+        var Borondong_MaErah = L.marker([-7.10346293, 107.7716086], {icon: borondong})
+            .bindPopup('<center><img src="assest/MaErah.jpg" width="300px" height="200px" title="Borondong Ma Erah" alt="Borondong Ma Erah"></center><h2>Borondong Ma Erah</h2>')
+            .addTo(map)
+        
+        var Borondong_SM = L.marker([-7.10329932, 107.7716862], {icon: borondong})
+            .bindPopup('<center><img src="assest/SM.jpg" width="300px" height="200px" title="Borondong Sari Manis [Ibu Osih]" alt="Borondong Sari Manis [Ibu Osih]"></center><h2>Borondong Sari Manis [Ibu Osih]</h2>')
+            .addTo(map)
+            
+        var Borondong_Alit = L.marker([-7.10185573, 107.7716024], {icon: borondong})
+            .bindPopup('<center><img src="assest/Cicih.jpg" width="300px" height="200px" title="Borondong Manis Ibu Alit" alt="Borondong Manis Ibu Alit"></center><h2>Borondong Manis Ibu Alit</h2>')
+            .addTo(map)
+
+        var oleh_oleh = L.layerGroup([Borondong_Cicih, Borondong_Madurasa, Borondong_Family, Borondong_MaErah,
+        Borondong_SM,Borondong_Alit]);
+        var overlayMaps = {
+        "Lokasi Borondong": oleh_oleh
+        };    
+
+        L.geoJSON(laksana,{
+                style: function(feature) {
+                },
+                onEachFeature: function (feature, layer) {
+                layer.bindPopup(
+                'Nama Desa: ' +
+                '<strong>' +
+                feature.properties.NAME_4 +
+                '</strong>'
+                );
+                }
+            })
+            .addTo(map);
+        
+        L.geoJSON(road,{
+                style: function(feature) {return {color: "red"};
+                },
+                onEachFeature: function (feature, layer) {
+                layer.bindPopup('jalan');
+                }
+            })
+            .addTo(map);
+        
+        L.control.layers(baseMaps,overlayMaps).addTo(map);
+    </script>
+
+<!--Geolocation-->
+<script language="javascript">
+    var map;
+    function init() {
+       map = new L.Map('map');
+       L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
+          maxZoom: 18
+       }).addTo(map);
+       map.attributionControl.setPrefix(''); // Don't show the 'Powered by Leaflet' text.
+
+       // map view before we get the location
+       map.setView(new L.LatLng(-7.10416679, 107.7713242), 13);
+    }
+
+    function onLocationFound(e) {
+       var radius = e.accuracy / 2;
+       var location = e.latlng
+       L.marker(location).addTo(map)
+       L.circle(location, radius).addTo(map);
+    }
+
+    function onLocationError(e) {
+       alert(e.message);
+    }
+
+    function getLocationLeaflet() {
+       map.on('locationfound', onLocationFound);
+       map.on('locationerror', onLocationError);
+
+       map.locate({setView: true, maxZoom: 16});
+    }
+ </script>
+
+    <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+    crossorigin="anonymous">
+    </script>
+
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.sticky.js"></script>
+    <script src="js/main.js"></script>
+
+</body>
+</html>
